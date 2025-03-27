@@ -81,8 +81,16 @@ def schedule_trigger():
             conn.close()
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    try:
+        scheduler.start()
+        logger.info("""
+        Servidor iniciado na porta 5000
+        Para expor via ngrok execute em outro terminal:
+        ngrok http --domain=admittedly-enjoyed-wallaby.ngrok-free.app 5000
+        """)
+        port = int(os.environ.get('PORT', 5000))
+        app.run(host='0.0.0.0', port=port, debug=False)
+        
     except Exception as e:
         logger.error(f"Falha ao iniciar servidor: {str(e)}")
     finally:
